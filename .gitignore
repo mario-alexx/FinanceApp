@@ -1,0 +1,79 @@
+# Archivos generados por el compilador
+bin/
+obj/
+*.csproj.user
+*.sln.docstates
+*.suo
+*.user
+*.userosscache
+*.userprefs
+*.vspscc
+[Bb]uild/
+[Dd]ebug/
+[Rr]elease/
+[Tt]est[Rr]esults/
+[Pp]ublish/
+
+# Archivos de caché de NuGet
+.nuget/
+packages/
+*.nupkg
+*.snupkg
+
+# Archivos de configuración de Visual Studio
+.vs/
+*.vssscc
+*.vsidx
+*.vsproj.user
+*.vsproj.vspscc
+
+# Archivos de configuración de Rider
+.idea/
+*.iml
+
+# Archivos de configuración de VS Code
+.vscode/
+
+# Archivos de configuración de Azure DevOps
+.azure-pipelines/
+
+# Archivos de configuración de Docker
+.dockerignore
+
+# Archivos de configuración de bases de datos
+*.mdf
+*.ldf
+*.sdf
+
+# Archivos de salida de herramientas de desarrollo
+*.log
+*.dump
+*.dmp
+*.bak
+
+# Archivos de configuración de usuarios
+appsettings.Development.json
+appsettings.Staging.json
+appsettings.Production.json
+
+# Archivos de salida de paquetes
+*.zip
+*.rar
+*.7z
+
+# Archivos temporales del sistema operativo
+[Tt]humbs.db
+*.DS_Store
+
+# Archivos generados por herramientas de terceros
+*.resharper.user*
+
+# Archivos de salida de pruebas unitarias
+TestResults/
+*.trx
+
+# Archivos de salida de documentación
+docs/_build/
+
+# Archivos env
+*.env

@@ -1,0 +1,36 @@
+services:
+  api:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    depends_on:
+      - sqlserver
+      - redis
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ConnectionStrings__DefaultConnection=Server=sqlserver;Database=FinanceDB;User Id=${SQLSERVER_USER};Password=${SQLSERVER_PASSWORD};TrustServerCertificate=True;
+    ports:
+      - "5000:8080"
+
+  sqlserver:
+    image: mcr.microsoft.com/mssql/server:2022-latest
+    container_name: sqlserver
+    ports:
+      - "1433:1433"
+    environment:
+      - ACCEPT_EULA=Y
+      - MSSQL_SA_PASSWORD=${SQLSERVER_PASSWORD}
+    volumes:
+      - sql_data:/var/opt/mssql
+
+  redis:
+    image: redis:latest
+    container_name: redis
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
+
+volumes:
+  sql_data:
+  redis_data:
