@@ -10,4 +10,5 @@ public interface ICategoryService
     Task<CategoryDto> CreateAsync(CreateCategoryDto dto, Guid userId);
     Task<bool> UpdateAsync(UpdateCategoryDto dto, Guid userId);
     Task<bool> DeleteAsync(Guid id, Guid userId);
+    Task<bool> ExistsAsync(Guid categoryId, Guid userId);
 }

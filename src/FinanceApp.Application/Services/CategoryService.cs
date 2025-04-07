@@ -56,4 +56,12 @@ public class CategoryService : ICategoryService
 
         return true;
     }
+
+    public async Task<bool> ExistsAsync(Guid categoryId, Guid userId)
+    {
+        var category = await _unitOfWork.Categories
+            .GetByIdAsync(categoryId, userId);
+
+        return category != null;
+    }
 }
