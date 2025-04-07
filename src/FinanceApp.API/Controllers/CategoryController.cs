@@ -1,6 +1,9 @@
 using System.Security.Claims;
+using ATCMediator.Mediator.Interfaces;
 using FinanceApp.Application.DTOs.Category;
 using FinanceApp.Application.Interfaces;
+using FinanceApp.Application.Services.Categories.CreateCategory;
+using FinanceApp.Application.Services.Categories.GetCategoryAll;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -13,10 +16,15 @@ namespace FinanceApp.API.Controllers
     public class CategoriesController : ControllerBase
     {   
         private readonly ICategoryService _categoryService;
+        private readonly IMediator _mediator;
 
-        public CategoriesController(ICategoryService categoryService)
+        public CategoriesController(
+            ICategoryService categoryService,
+            IMediator mediator
+        )
         {
             _categoryService = categoryService;
+            _mediator = mediator;
         }
 
         private Guid GetUserId() 
@@ -32,7 +40,7 @@ namespace FinanceApp.API.Controllers
         public async Task<IActionResult> GetAll()
         {
             var userId = GetUserId();
-            var categories = await _categoryService.GetAllAsync(userId);
+            var categories = await _mediator.SendQuery(new GetCategoryAllQuery { UserId = userId });
             return Ok(categories);
         }
 
@@ -48,10 +56,10 @@ namespace FinanceApp.API.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Create(CreateCategoryDto createDto)
+        public async Task<IActionResult> Create(CreateCategoryCommand createDto)
         {
-            var userId = GetUserId();
-            var category = await _categoryService.CreateAsync(createDto, userId);
+            createDto.UserId = GetUserId();
+            var category = await _mediator.SendCommand(createDto);
             return CreatedAtAction(nameof(GetById), new { id = category.Id }, category);
         }
 
