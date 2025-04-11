@@ -1,8 +1,10 @@
 using System;
+using FinanceApp.Application.Common.Pagination;
 using FinanceApp.Application.DTOs.Transaction;
 using FinanceApp.Application.Interfaces;
 using FinanceApp.Application.Interfaces.Persistence;
 using FinanceApp.Domain.Entities;
+using Microsoft.AspNetCore.Mvc.RazorPages;
 
 namespace FinanceApp.Application.Services;
 
@@ -53,6 +55,26 @@ public class TransactionService : ITransactionService
         _unitOfWork.Transactions.SoftDelete(transaction);
         await _unitOfWork.SaveChangesAsync();
         return true;
+    }
+
+    public async Task<List<TransactionDto>> GetDeletedAsync(Guid userId)
+    {
+        var deletedTransactions = await _unitOfWork.Transactions.GetDeletedAsync(userId);
+        return deletedTransactions.Select(t => new TransactionDto(t)).ToList();
+    }
+
+    public async Task<PagedResult<TransactionDto>> GetFilteredAsync(Guid userId, TransactionFilterDto filters, PaginationParams paginationParams) 
+    {
+        var pagedTransactions = await _unitOfWork.Transactions.GetFilteredAsync(userId, filters, paginationParams);        
+        
+        var dtoItems = pagedTransactions.Items.Select(t => new TransactionDto(t)).ToList();
+
+        return new PagedResult<TransactionDto>(
+            dtoItems, 
+            pagedTransactions.TotalCount,
+            pagedTransactions.PageNumber, 
+            pagedTransactions.PageSize
+        );
     }
 }
 

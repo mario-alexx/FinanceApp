@@ -1,4 +1,5 @@
 using System.Security.Claims;
+using FinanceApp.Application.Common.Pagination;
 using FinanceApp.Application.DTOs.Transaction;
 using FinanceApp.Application.Interfaces;
 using Microsoft.AspNetCore.Authorization;
@@ -73,5 +74,22 @@ namespace FinanceApp.API.Controllers
             return deleted ? NoContent() : NotFound();
         }
 
+        [HttpGet("deleted")]
+        public async Task<IActionResult> GetDeletd() 
+        {
+            var userId = GetUserId();
+            var transactions = await _transactionService.GetDeletedAsync(userId);
+            return Ok(transactions);
+        }
+
+        [HttpGet("transactions-filtered")]
+        public async Task<IActionResult> GetFilteredTransactions(
+            [FromQuery] TransactionFilterDto filters,
+            [FromQuery] PaginationParams paginationParams)
+        {
+            var userId = GetUserId();
+            PagedResult<TransactionDto> transactions = await _transactionService.GetFilteredAsync(userId, filters, paginationParams);
+            return Ok(transactions);
+        }
     }
 }
